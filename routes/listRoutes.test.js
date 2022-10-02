@@ -33,3 +33,20 @@ test('POST /items - adds an item to our list of items', async () => {
         }
     });
 })
+
+describe('GET /items/:name', () => {
+    test('get single item by name from list of items', async () => {
+        items.push({
+            name: "test-item",
+            price: 2.75
+        })
+        const res = await request(app).get('/items/test-item');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toEqual({ name: "test-item", price: 2.75 })
+    })
+    test('responds with 404 if name not in list of items', async () => {
+        const res = await request(app).get('/items/nope');
+        expect(res.statusCode).toBe(404);
+    })
+})
+
