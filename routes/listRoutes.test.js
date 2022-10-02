@@ -1,6 +1,5 @@
 process.env.NODE_ENV = "test";
 
-const { default: test } = require("node:test");
 const request = require("supertest");
 const app = require("../app");
 const items = require("../fakeDb");
@@ -70,6 +69,22 @@ describe('PATCH /items/:name', () => {
                 price: 22.75
             }
         })
+    })
+    test('responds with 404 if item name not in list of items', async () => {
+        const res = await request(app).get('/items/nope');
+        expect(res.statusCode).toBe(404);
+    })
+})
+
+describe('DELETE /items/:name', () => {
+    test('delete single item from list of items', async () => {
+        items.push({
+            name: "test-item",
+            price: 2.75
+        })
+        const res = await request(app).delete("/items/test-item")
+        expect(res.statusCode).toBe(200)
+        expect(res.body).toEqual({ message: "test-item DELETED" });
     })
     test('responds with 404 if item name not in list of items', async () => {
         const res = await request(app).get('/items/nope');
