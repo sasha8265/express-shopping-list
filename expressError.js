@@ -1,25 +1,11 @@
-const express = require("express")
-const app = express()
-const listRoutes = require("./routes/listRoutes")
-const ExpressError = require("./expressError")
-
-app.use(express.json());
-app.use("/listRoutes", listRoutes);
-
-
-/** 404 Error Handler */
-app.use((req, res, next) => {
-    return new ExpressError("Not Found", 404)
-});
+class ExpressError extends Error {
+    constructor(message, status) {
+        super();
+        this.message = message;
+        this.status = status;
+        console.error(this.stack);
+    }
+}
 
 
-/** General Error Handler */
-app.use((req, res, next) => {
-    res.status(err.status || 500);
-
-    return res.json({
-        error: err.msg
-    });
-});
-
-module.exports = app;
+module.exports = ExpressError;
