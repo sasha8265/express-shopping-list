@@ -32,4 +32,13 @@ router.patch("/:name", function (req, res) {
     return res.status(200).json({ updated: foundItem })
 })
 
+router.delete("/:name", function (req, res) {
+    const foundItem = listItems.findIndex(item => item.name === req.params.name)
+    if (foundItem === -1) {
+        throw new ExpressError("Item not found", 404)
+    }
+    listItems.splice(foundItem, 1)
+    return res.json({ message: `${req.params.name} DELETED`})
+})
+
 module.exports = router;
