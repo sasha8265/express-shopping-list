@@ -11,7 +11,15 @@ router.get("/", function (req, res) {
 router.post("/", function (req, res) {
     const newItem = { name: req.body.name, price: req.body.price }
     listItems.push(newItem)
-    return res.json({added: newItem})
+    return res.status(201).json({added: newItem})
+})
+
+router.get("/:name", function (req, res) {
+    const foundItem = listItems.find(item => item.name === req.params.name)
+    if (foundItem === undefined) {
+        throw new ExpressError("Item not found", 404)
+    }
+    return res.json(foundItem)
 })
 
 module.exports = router;
