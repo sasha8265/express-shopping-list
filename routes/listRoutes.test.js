@@ -50,3 +50,24 @@ describe('GET /items/:name', () => {
     })
 })
 
+describe('PATCH /items/:name', () => {
+    test('update single item in list', async () => {
+        items.push({
+            name: "test-item",
+            price: 2.75
+        })
+        const res = await request(app)
+            .patch('/items/test-item')
+            .send({
+                name: "test-item-2",
+                price: 22.75
+            })
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toEqual({
+            updated: {
+                name: "test-item-2",
+                price: 22.75
+            }
+        })
+    })
+})
