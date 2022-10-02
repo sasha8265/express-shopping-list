@@ -1,5 +1,6 @@
 process.env.NODE_ENV = "test";
 
+const { default: test } = require("node:test");
 const request = require("supertest");
 const app = require("../app");
 const items = require("../fakeDb");
@@ -69,5 +70,9 @@ describe('PATCH /items/:name', () => {
                 price: 22.75
             }
         })
+    })
+    test('responds with 404 if item name not in list of items', async () => {
+        const res = await request(app).get('/items/nope');
+        expect(res.statusCode).toBe(404);
     })
 })
